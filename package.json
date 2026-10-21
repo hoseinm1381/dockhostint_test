@@ -1,11 +1,13 @@
 {
   "name": "poulstar-dockhosting-deploy-test",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "Minimal React + NestJS JSON persistence demo for DockHosting",
-  "engines": { "node": ">=20 <23" },
+  "engines": {
+    "node": ">=20 <23"
+  },
   "scripts": {
-    "build": "tsc -p tsconfig.server.json && vite build src/frontend --outDir ../../web-dist",
+    "build": "tsc -p tsconfig.server.json && vite build src/frontend --outDir ../../web-dist --emptyOutDir",
     "start": "node server-dist/main.js",
     "dev:api": "npm run build:api && npm start",
     "build:api": "tsc -p tsconfig.server.json"

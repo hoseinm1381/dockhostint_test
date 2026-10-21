@@ -1,54 +1,73 @@
-# پروژه تست انتشار Poulstar در DockHosting
+# پروژه کامل آزمایشی Poulstar — DockHosting (نسخه ۱.۱)
 
-این پروژه برای جلسه ۱۱ ترم اول تهیه شده است؛ **React + NestJS + GET/POST + ذخیره JSON** در یک سرویس و یک URL.
+پروژه کوچک و مستقل برای جلسهٔ ۱۱: **رابط React + API با NestJS + GET/POST + ذخیرهٔ JSON** روی یک آدرس HTTPS.
 
-## ۱. قرار دادن فایل‌ها در GitHub
+> پروژهٔ نمایشی برای دادهٔ عمومی است؛ اطلاعات خصوصی، رمز یا کلید API وارد نکنید.
 
-1. ZIP را در کامپیوتر **Extract** کنید.
-2. در GitHub یک repository تازه مثلاً `poulstar-deploy-test` بسازید.
-3. با `Add file` → `Upload files`، **محتویات داخل پوشه** را آپلود کنید، نه خود فایل ZIP و نه یک پوشهٔ اضافه.
-4. فایل `package.json` باید دقیقاً در **ریشه repository** دیده شود؛ مثلاً `https://github.com/USERNAME/poulstar-deploy-test/blob/main/package.json`.
-5. Commit changes را بزنید. فایل‌های `.env` یا کلید API لازم نیستند.
+## انتشار پروژه روی GitHub — جایگزینی همهٔ فایل‌ها
 
-## ۲. انتشار در DockHosting
+1. ZIP را **Extract** کن. خود ZIP را به‌عنوان فایل در GitHub آپلود نکن.
+2. وارد مخزن `hoseinm1381/dockhostint_test` (شاخهٔ `main`) شو.
+3. فایل‌ها و زیرپوشه‌های **داخل** پوشهٔ استخراج‌شده را با `Add file > Upload files` آپلود و Commit کن.
+4. ساختار ریشهٔ مخزن باید شبیه این باشد (هیچ پوشهٔ اضافی بالای فایل‌ها نگذار):
 
-1. در صفحهٔ Onboarding، ریپوی `poulstar-deploy-test` را انتخاب کنید.
-2. Branch را روی `main` بگذارید.
-3. Runtime یا Framework را روی `Node.js` یا `NestJS` (اگر قابل انتخاب است) بگذارید؛ تشخیص خودکار هم قابل قبول است.
-4. Root directory باید `/` یا خالی باشد (همان محل `package.json`).
-5. Build command در صورت نیاز: `npm run build`
-6. Start command در صورت نیاز: `npm start`
-7. Port: برنامه خودش `process.env.PORT` را استفاده می‌کند؛ در صورت اجبار `3000` انتخاب کنید.
-8. **Database لازم نیست**؛ اگر مرحلهٔ Database اختیاری بود Skip/None را بزنید.
-9. Deploy کنید و منتظر نتیجهٔ موفق باشید.
+   ```text
+   Dockerfile
+   nixpacks.toml
+   package.json
+   tsconfig.server.json
+   src/
+     server/main.ts
+     frontend/index.html
+     frontend/main.tsx
+     frontend/style.css
+   ```
 
-## ۳. تست اول: React و NestJS
+5. این دو آدرس باید باز شوند:
+   - `https://github.com/hoseinm1381/dockhostint_test/blob/main/Dockerfile`
+   - `https://github.com/hoseinm1381/dockhostint_test/blob/main/nixpacks.toml`
 
-* URL ارائه‌شده توسط DockHosting را باز کنید.
-* باید تیتر «سایتت روی اینترنت زنده است!» دیده شود.
-* یک پیام آزمایشی وارد کنید و «ذخیره روی سرور» را بزنید.
-* صفحه را Refresh کنید و ببینید پیام موجود است.
-* آدرس‌های `/api/health` و `/api/messages` نیز باید JSON برگردانند.
+فایل‌های دیگر ZIP، شامل `.dockerignore` و `.gitignore` و همین راهنما، نیز باید در ریشه باشند. اگر مرورگر آپلود فایل‌های مخفی را پشتیبانی نکرد، دو فایل مخفی ضروری برای بالا آمدن برنامه نیستند؛ ولی `Dockerfile` و `nixpacks.toml` مهم هستند.
 
-**توجه:** باقی ماندن داده در Refresh به معنی ماندگاری بعد از Deploy نیست.
+**نکتهٔ GitHub:** آپلود فایل روی مسیر یکسان، نسخهٔ قبلی را جایگزین می‌کند؛ ولی فایل‌های اضافه‌ای را که دیگر در ZIP نیستند، خودش پاک نمی‌کند. در این پروژه ساختار فایل‌های قبلی حفظ شده است.
 
-## ۴. تست اصلی: ماندگاری پس از Restart/Redeploy
+## تنظیم DockHosting
 
-در پروژهٔ DockHosting، در بخش Storage / Volumes (بسته به نسخهٔ پنل):
+- Repository: `hoseinm1381/dockhostint_test`
+- Branch: `main`
+- Runtime: `NestJS` یا `Node.js`
+- Build method / Builder: **Dockerfile** (اگر چنین گزینه‌ای دارد)
+- Dockerfile path: `Dockerfile`
+- Root directory: **خالی** یا `/`
+- App port: **Automatic** یا در صورت اجبار `3000`
+- Database: **No database**
+- Environment variables: برای تست اولیه نیاز ندارد
+- Auto-deploy: می‌تواند فعال باشد
 
-* یک **Persistent Volume** اضافه کنید.
-* Mount path را دقیقاً `/data` قرار دهید.
-* در تنظیمات Environment Variables مقدار `DATA_DIR` را برابر `/data` بگذارید.
-* سرویس را Restart یا Redeploy کنید.
-* دوباره یک پیام ثبت کنید.
-* شناسهٔ boot را در صفحه یادداشت کنید، یک Restart یا Redeploy دیگر انجام دهید.
-* شناسهٔ boot باید عوض شود، اما پیام قبلی باید حفظ شود.
+روی Push جدید، یک Deployment تازه شروع می‌شود. قبل از Redeploy دستی، وضعیت Buildهای قبلی را بررسی کن و از ایجاد Deployهای هم‌زمان خودداری کن.
 
-اگر این بخش در پنل رایگان موجود نبود، **آن را به عنوان تست ماندگاری موفق در نظر نگیرید.** بدون Volume ممکن است دادهٔ JSON هنگام Redeploy از بین برود.
+اگر در لاگ خروجی `FROM node:22-alpine` دیدی، Dockerfile انتخاب شده است.
+اگر `nixpacks plan` دیدی، سیستم هنوز Nixpacks را اجرا می‌کند؛ فایل `nixpacks.toml` باید شروع را به `npm start` تغییر دهد. در لاگ اجرا، **Caddy نباید جای NestJS را بگیرد**.
 
-## ۵. اجرای محلی (اختیاری)
+## تست بعد از Deploy موفق
 
-نیازمند Node.js 20 یا 22:
+- صفحهٔ اصلی: `https://dockhostint-test.dockhosting.dev/`
+- سلامت API: `https://dockhostint-test.dockhosting.dev/api/health`
+- دریافت پیام‌ها: `https://dockhostint-test.dockhosting.dev/api/messages`
+- روی صفحه یک پیام عمومی بنویس و ذخیره کن؛ بعد Refresh کن.
+
+**مهم:** صرفاً Refresh تضمین نمی‌کند اطلاعات بعد از Redeploy باقی بمانند.
+
+## برای تست ماندگاری واقعی JSON
+
+- از پنل DockHosting یک **Persistent Volume** با mount path برابر `/data` بساز (اگر پلن اجازه می‌دهد).
+- Environment Variable به نام `DATA_DIR` با مقدار `/data` تنظیم کن.
+- Restart/Redeploy کن، یک پیام ثبت کن و دوباره Restart/Redeploy کن؛ پیام باید باقی بماند.
+- اگر امکان Volume وجود ندارد، شرط «ماندگاری پس از انتشار مجدد» هنوز تأمین نشده و برای هدف نهایی جلسهٔ ۱۱ باید هاست دیگری انتخاب شود.
+
+## اجرای محلی برای تست
+
+در کامپیوتری که Node.js نسخهٔ ۲۲ دارد:
 
 ```bash
 npm install
@@ -56,11 +75,13 @@ npm run build
 npm start
 ```
 
-در مرورگر `http://localhost:3000` را باز کنید. برای تست محلی فایل JSON در پوشهٔ `data` ذخیره می‌شود.
+سپس `http://localhost:3000/` را باز کن.
 
-## نکات ایمنی
+## عیب‌یابی
 
-* فقط متن آزمایشی عمومی بنویسید؛ نام/شماره/اطلاعات شخصی وارد نکنید.
-* این پروژه بدون حساب کاربری و فقط برای تست است؛ هر کسی با URL می‌تواند پیام وارد کند.
-* فایل‌های ذخیره‌شده در مخزن GitHub نگهداری نمی‌شوند؛ اطلاعات در فضای سرور قرار می‌گیرند.
-* این نمونه برای تست قابلیت‌هاست، نه برنامهٔ آمادهٔ تولید.
+- 404 صفحهٔ اصلی: ابتدا `/api/health` را تست کن. اگر API کار کرد، مسیر فایل‌های React را بررسی کن.
+- 404 برای API: احتمالاً برنامهٔ NestJS اجرا نشده و Caddy یا وب‌سرور استاتیک بالا آمده است؛ لاگِ آخرین Deploy را ببین.
+- `Pending` یا `Building` طولانی: الزاماً خطای کد نیست؛ ساخت Docker image و منابع سرویس‌دهنده را بررسی کن.
+- اگر خطای TypeScript یا npm مشاهده شد، **اولین** خطای صریح لاگ را بفرست، نه صرفاً آخرین خط را.
+
+این ZIP کد کامل پروژه است؛ نیازی به ساخت دستی فایل دیگری در GitHub نیست.
